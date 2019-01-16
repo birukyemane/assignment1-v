@@ -10,4 +10,3 @@
 
     * React
     * Goolge maps API 
-    * Virta's public API 

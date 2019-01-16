@@ -1,33 +1,51 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper } from 'google-maps-react';
+import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
-/*  The Map component takes in some optional props such as style(the CSS style object),
-    Zoom(number value representing a tighter focus on the map's center) and initialCenter(an object 
-    containing latitude and longitude coordinates).
-
-    GoogleApiWrapper is a Higher Order Component(HOC) that provides wrapper around Google APIs.
-    
-    A Google Maps API Key : you can get it from here https://developers.google.com/maps/documentation/javascript/get-api-key
+/*  - chekout the documentation for google-maps-react from https://www.npmjs.com/package/google-maps-react   
+    - A Google Maps API Key : you can get it from here https://developers.google.com/maps/documentation/javascript/get-api-key
 */
 
-const mapStyles = {  
-  width: '100%',
-  height: '100%'
-};
-
 export class MapContainer extends Component {
+  state = {
+    showingInfoWindow: false,
+    activeMarker: {},
+    selectedPlace: {},
+  };
+ 
+  onMarkerClick = (props, marker, e) =>
+    this.setState({
+      selectedPlace: props,
+      activeMarker: marker,
+      showingInfoWindow: true
+    });
+ 
+  onMapClicked = (props) => {
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null
+      })
+    }
+  };
+ 
   render() {
     return (
-      <Map
-        google={this.props.google}
-        zoom={14}
-        style={mapStyles}
-        initialCenter={{
-         lat: -1.2884,
-         lng: 36.8233
-        }}
-      />
-    );
+      <Map google={this.props.google}
+          onClick={this.onMapClicked}>
+        <Marker onClick={this.onMarkerClick}
+                name={'Current location'} />
+        <Marker onClick={this.onMarkerClick}
+                name={'Current location'} 
+                position={{lat: 37.778519, lng: -122.405640}} />
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}>
+            <div>
+              <h1>{this.state.selectedPlace.name}</h1>
+            </div>
+        </InfoWindow>
+      </Map>
+    )
   }
 }
 
