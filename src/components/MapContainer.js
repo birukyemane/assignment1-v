@@ -40,11 +40,12 @@ export class MapContainer extends Component {
                 name={station.name}
                 id= {station.id} // pass ID of the station. this is to test if we can pass additional props 
                 position={{lat: station.latitude, lng: station.longitude}}
-                icon = {(station.latitude < 0? markerIcon:'')} //if its in south hemisphere use custom icon else use default icon
+                icon = {(station.latitude < 0? markerIcon:'')} //if its in south hemisphere use custom icon else use the default icon. we can use it later based on station's status. 
                 />
     });
     return (
       <Map google={this.props.google}
+       centerAroundCurrentLocation
           onClick={this.onMapClicked}
           style={style}
             zoom={14}   // the higher the no. it zoom in more 
@@ -52,7 +53,7 @@ export class MapContainer extends Component {
               lat: 60.166772,
               lng: 24.933648
             }}>
-       
+        <Marker onClick={this.onMarkerClick} name={'current location'}/>
         {stationMarkers}
         <InfoWindow
           marker={this.state.activeMarker}

@@ -4,7 +4,6 @@ import './App.css';
 import MapContainer from './components/MapContainer';
 import axios from 'axios';
 
-
 class App extends Component {
   state = {
     stations:[]
@@ -19,7 +18,7 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
+      <div className="App">       
         <MapContainer stations={this.state.stations}/>
       </div>
     );
