@@ -20,10 +20,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div>
-          <h1>Virta stations</h1>
-        </div>
-         <MapContainer stations={this.state.stations}/>
+        <MapContainer stations={this.state.stations}/>
       </div>
     );
   }
