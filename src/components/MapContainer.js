@@ -1,72 +1,73 @@
 import React, { Component } from 'react';
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
-import markerIcon from '../assets/marker.png' // a custom icon.
+import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
-/*  - chekout the documentation for google-maps-react from https://www.npmjs.com/package/google-maps-react   
-    - A Google Maps API Key : you can get it from here https://developers.google.com/maps/documentation/javascript/get-api-key
-*/
-
-const style = {
-  width: '100%',
-  height: '100%',  
-}
+import VirtaMap from './Map';
+import availableIcon from '../assets/available.png';
+import busyIcon from '../assets/busy.png';
+import disconnectedIcon from '../assets/disconnected.png';
+import currentLocationIcon from '../assets/currentLocation.png';
+import Info from './Info';
 
 export class MapContainer extends Component {
   state = {
     showingInfoWindow: false,
     activeMarker: {},
-    selectedPlace: {},
+    selectedPlace: {}
   };
- 
-    onMarkerClick = (props, marker, e) =>
+
+  onMarkerClick = (props, marker, e) =>
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true
     });
- 
-  onMapClicked = (props) => {
+
+  onClose = props => {
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
         activeMarker: null
-      })
+      });
     }
   };
- 
+
+  mapClicked = (props) => {
+    console.log('map clicked');
+    if (this.state.showingInfoWindow) {
+      this.setState({
+        showingInfoWindow: false,
+        activeMarker: null
+      });
+    }
+  }
+
   render() {
+    // create markers for each station
     const stationMarkers = this.props.stations.map((station,index) =>{
-      return <Marker key={index+1} onClick={this.onMarkerClick}
-                name={station.name}
-                id= {station.id} // pass ID of the station. this is to test if we can pass additional props 
-                position={{lat: station.latitude, lng: station.longitude}}
-                icon = {(station.latitude < 0? markerIcon:'')} //if its in south hemisphere use custom icon else use the default icon. we can use it later based on station's status. 
+        return <Marker key={index+1} onClick={this.onMarkerClick}
+                  name={station.name}
+                  address= {station.address}
+                  evses = {station.evses}
+                  position={{lat: station.latitude, lng: station.longitude}}
+                  status = {station.status}
+                  icon = {(station.status === 0? disconnectedIcon: (station.status === 1?availableIcon:busyIcon))} // change the marker icon based on the status 
                 />
-    });
+    });    
+
     return (
-      <Map google={this.props.google}
-       centerAroundCurrentLocation
-          onClick={this.onMapClicked}
-          style={style}
-            zoom={14}   // the higher the no. it zoom in more 
-            initialCenter={{  // center th map at Helsinki center
-              lat: 60.166772,
-              lng: 24.933648
-            }}>
-        <Marker onClick={this.onMarkerClick} name={'current location'}/>
-        {stationMarkers}
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}>
-            <div>
-              <h1>{this.state.selectedPlace.id}</h1>
-            </div>
-        </InfoWindow>
-      </Map>
-    )
+        <div>
+            <VirtaMap centerAroundCurrentLocation google={this.props.google} onClick={this.mapClicked}>
+                <Marker onClick={this.onMarkerClick} name={'current location'} icon={currentLocationIcon}/>
+                {stationMarkers}                
+            </VirtaMap>
+            <Info visible={this.state.showingInfoWindow} name={this.state.selectedPlace.name} address={this.state.selectedPlace.address} evses={this.state.selectedPlace.evses}/>
+        </div>
+        
+    );
   }
 }
+//                   
 
-export default GoogleApiWrapper({  // 
-  apiKey: 'AIzaSyB0i1q7Wfcubj6j01i7XEf-lLukuaL4A1o' // YOUR_GOOGLE_API_KEY_GOES_HERE
+export default GoogleApiWrapper({
+  apiKey: 'AIzaSyB0i1q7Wfcubj6j01i7XEf-lLukuaL4A1o'
 })(MapContainer);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import axios from 'axios';
-import MapContainer from './components/VirtaMap';
+import MapContainer from './components/MapContainer';
 
 
 class App extends Component {

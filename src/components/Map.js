@@ -70,6 +70,11 @@ export class VirtaMap extends React.Component {
       );
       // maps.Map() is constructor that instantiates the map
       this.map = new maps.Map(node, mapConfig);
+
+      // add click event listerner
+      this.map.addListener('click', (evt) => {
+        this.props.onClick(this.map);
+      })
     }
   }
 
@@ -106,7 +111,7 @@ export class VirtaMap extends React.Component {
     return (
       <div >
         <div style={styles} ref="map">
-          Loading map...
+          <h1 className="loading">Loading map...</h1>
         </div>
         {this.renderChildren()}
       </div>
@@ -123,9 +128,9 @@ VirtaMap.propTypes = {
 
 VirtaMap.defaultProps = {
   zoom: 14,
-  initialCenter: {
-    lat: -1.2884,
-    lng: 36.8233
+  initialCenter: { // Helsinki 
+    lat: 60.169830,
+    lng: 24.938190
   },
   centerAroundCurrentLocation: false,
   visible: true
