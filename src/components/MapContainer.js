@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
+import { GoogleApiWrapper, Marker } from 'google-maps-react';
 
 import VirtaMap from './Map';
 import availableIcon from '../assets/available.png';
@@ -22,16 +22,7 @@ export class MapContainer extends Component {
       showingInfoWindow: true
     });
 
-  onClose = props => {
-    if (this.state.showingInfoWindow) {
-      this.setState({
-        showingInfoWindow: false,
-        activeMarker: null
-      });
-    }
-  };
-
-  mapClicked = (props) => {
+   mapClicked = (props) => {
     console.log('map clicked');
     if (this.state.showingInfoWindow) {
       this.setState({
@@ -45,9 +36,8 @@ export class MapContainer extends Component {
     // create markers for each station
     const stationMarkers = this.props.stations.map((station,index) =>{
         return <Marker key={index+1} onClick={this.onMarkerClick}
-                  name={station.name}
-                  address= {station.address}
-                  evses = {station.evses}
+                  id = {station.id}
+                  title = {station.id}
                   position={{lat: station.latitude, lng: station.longitude}}
                   status = {station.status}
                   icon = {(station.status === 0? disconnectedIcon: (station.status === 1?availableIcon:busyIcon))} // change the marker icon based on the status 
@@ -57,10 +47,10 @@ export class MapContainer extends Component {
     return (
         <div>
             <VirtaMap centerAroundCurrentLocation google={this.props.google} onClick={this.mapClicked}>
-                <Marker onClick={this.onMarkerClick} name={'current location'} icon={currentLocationIcon}/>
+                <Marker title={'current location'} name={'current location'} icon={currentLocationIcon}/>
                 {stationMarkers}                
             </VirtaMap>
-            <Info visible={this.state.showingInfoWindow} name={this.state.selectedPlace.name} address={this.state.selectedPlace.address} evses={this.state.selectedPlace.evses}/>
+            <Info visible={this.state.showingInfoWindow} stationId ={this.state.selectedPlace.id}/>
         </div>
         
     );
