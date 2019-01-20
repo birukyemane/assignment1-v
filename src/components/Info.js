@@ -53,7 +53,7 @@ class Info extends Component{
                     <div>EVSE ID - {this.state.station.evses[this.state.current].id}</div>
                     <div>Maximum power: {this.state.station.evses[this.state.current].connectors[0].maxKwh + ' KW'}</div> 
                     <div>Current type : {this.state.station.evses[this.state.current].connectors[0].currentType} </div>
-                    <div>EUR {this.state.station.evses[this.state.current].pricing[0].priceCents}/ kwh ja EUR {this.state.station.evses[this.state.current].pricing[1].priceCents}/h</div>
+                    <div>Pricing : EUR {this.state.station.evses[this.state.current].pricing[0].priceCents}/ kwh ja EUR {this.state.station.evses[this.state.current].pricing[1].priceCents}/h</div>
                     </div>          
                 </div>           
             )
@@ -69,9 +69,9 @@ class Info extends Component{
 export default Info;
 
 Info.propTypes = {
-    stationId: PropTypes.number,    
+    stationId: PropTypes.number,    // station id is number
 } 
 
 Info.defaultProps = {
-    stationId: -1,    
+    stationId: -1,    // -1 represents casee when there is no id, at the begining. 
 };

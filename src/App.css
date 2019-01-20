@@ -12,6 +12,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  text-align: left;
   position: fixed;
   bottom: 0;
   right: 0;
@@ -19,7 +20,8 @@
   border: none;
   background: white;
   padding: 5px;
-  font-size: 15px;
+  font-size: 17px;
+  margin-bottom: 3px;
 }
 
 .infoTitle{
@@ -36,7 +38,6 @@
 .eves {
   margin-right: 5px;
   padding: 3px;
-  font-size: 18;
 }
 
 .hide{
@@ -48,5 +49,6 @@ button {
   background: orange;
   color: white;
   padding: 7px;
-  font-size: 15px;
+  font-size: 17px;
+  margin: 4px 4px;
 }
