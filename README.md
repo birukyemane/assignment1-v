@@ -1,6 +1,6 @@
 ## Assignment 1
 
-check it out [live!](https://competent-mirzakhani-893cdc.netlify.com/git)
+check it out [live!](https://competent-mirzakhani-893cdc.netlify.com/)
 
 # Features
 
